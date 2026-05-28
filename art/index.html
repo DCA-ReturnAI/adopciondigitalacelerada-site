@@ -523,6 +523,12 @@ section {
   gap: 12px;
   border-left-width: 4px;
   border-left-style: solid;
+  transition: transform 250ms ease-out, box-shadow 250ms ease-out;
+}
+
+.obstacle-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(30,42,56,0.11);
 }
 
 .obstacle-item--critical { border-left-color: var(--dca-terracotta); }
@@ -1379,10 +1385,444 @@ section {
   margin: 16px auto 0;
 }
 
+/* ═══════════════════════════════════════════
+   SISTEMA DE ANIMACIONES — DCA 2026
+   JS vanilla + CSS puro · sin librerías
+   ═══════════════════════════════════════════ */
+
+/* A · Reveal de secciones */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 600ms cubic-bezier(0.22, 1, 0.36, 1),
+              transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* B · Stagger — los delays los aplica el JS (90ms incremental) */
+
+/* D · Headline reveal con clip-path */
+.reveal-headline {
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 800ms cubic-bezier(0.77, 0, 0.175, 1);
+  will-change: clip-path;
+}
+.reveal-headline.visible {
+  clip-path: inset(0 0% 0 0);
+}
+
+/* E · Línea teal/oro creciente bajo H2 (anima el section-accent existente) */
+.section-accent {
+  width: 0;
+  transition: width 500ms ease-out 200ms;
+}
+.section-accent.visible {
+  width: 40px;
+}
+
+/* F · Hover en tarjetas */
+.lift {
+  transition: transform 250ms ease-out, box-shadow 250ms ease-out;
+}
+.lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(30, 42, 56, 0.11),
+              inset 3px 0 0 0 var(--dca-gold);
+}
+/* Variante sin acento dorado (tarjetas con borde de color propio) */
+.lift-plain {
+  transition: transform 250ms ease-out, box-shadow 250ms ease-out;
+}
+.lift-plain:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(30, 42, 56, 0.11);
+}
+
+/* G · Barra de progreso de lectura */
+#reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 0%;
+  background: var(--dca-teal);
+  z-index: 300;
+  opacity: 0;
+  transition: opacity 300ms ease;
+  pointer-events: none;
+}
+#reading-progress.active {
+  opacity: 1;
+}
+
+/* H · Header scroll behavior */
+.site-header {
+  transition: background 300ms ease, box-shadow 300ms ease, border-color 300ms ease;
+}
+.site-header.scrolled {
+  background: rgba(255, 255, 255, 0.88);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 1px 20px rgba(30, 42, 56, 0.08);
+  border-bottom-color: transparent;
+}
+
+/* I · Pulse sutil en botón gold del bloque carbón */
+@keyframes gold-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(164, 129, 17, 0); }
+  50%      { box-shadow: 0 0 0 10px rgba(164, 129, 17, 0.15); }
+}
+.btn-gold-pulse {
+  animation: gold-pulse 2.5s ease-in-out infinite;
+}
+
+/* ── Hero · barra decorativa del eyebrow ── */
+.hero-eyebrow-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.hero-eyebrow-bar {
+  width: 0;
+  height: 4px;
+  background: var(--dca-teal);
+  border-radius: 2px;
+  flex-shrink: 0;
+  transition: width 600ms cubic-bezier(0.22, 1, 0.36, 1) 150ms;
+}
+.hero-eyebrow-bar.visible {
+  width: 80px;
+}
+.hero-eyebrow-row .hero-eyebrow {
+  margin-bottom: 0;
+}
+
+/* ── Hero · patrón de puntos platino (40% derecho) ── */
+.block-hero { position: relative; overflow: hidden; }
+.hero-dots {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40%;
+  height: 100%;
+  background-image: radial-gradient(circle, var(--dca-platinum) 1px, transparent 1px);
+  background-size: 24px 24px;
+  opacity: 0.55;
+  pointer-events: none;
+  z-index: 0;
+  -webkit-mask-image: linear-gradient(to left, #000 55%, transparent 100%);
+  mask-image: linear-gradient(to left, #000 55%, transparent 100%);
+}
+.hero-inner { position: relative; z-index: 1; }
+@media (max-width: 767px) {
+  .hero-dots { display: none; }
+}
+
+/* ── Hero · top border teal en la tarjeta visual ── */
+.hero-visual-card {
+  border-top: 3px solid var(--dca-teal);
+}
+
+/* ═══════════════════════════════════════════
+   TIMELINE · horizontal desktop / vertical móvil
+   ═══════════════════════════════════════════ */
+.timeline-steps {
+  position: relative;
+}
+.timeline-num {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--dca-teal);
+  color: var(--dca-white);
+  font-family: var(--font-display);
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+.timeline-num--gold { background: var(--dca-gold); }
+
+@media (min-width: 768px) {
+  .timeline-steps {
+    flex-direction: row;
+    gap: 24px;
+  }
+  .timeline-step {
+    flex: 1;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding-bottom: 0 !important;
+  }
+  /* línea conectora 2px platinum centrada con los círculos */
+  .timeline-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 60px;
+    top: 19px;
+    right: auto;
+    bottom: auto;
+    width: calc(100% - 60px);
+    height: 2px;
+    background: var(--dca-platinum);
+    transform: none;
+  }
+}
+
+/* ── Testimoniales · comilla decorativa grande ── */
+.block-testimonials .testimonial-card { position: relative; overflow: hidden; }
+.testimonial-quote-mark {
+  position: absolute;
+  top: 16px;
+  left: 20px;
+  font-family: var(--font-display);
+  font-size: 120px;
+  line-height: 0.8;
+  color: var(--dca-teal);
+  opacity: 0.08;
+  pointer-events: none;
+  margin: 0;
+  z-index: 0;
+}
+.testimonial-card .testimonial-text,
+.testimonial-card .testimonial-divider,
+.testimonial-card .testimonial-author {
+  position: relative;
+  z-index: 1;
+}
+.testimonial-card--featured {
+  background: var(--dca-teal-subtle);
+}
+.block-testimonials .testimonial-card {
+  transition: transform 250ms ease-out, box-shadow 250ms ease-out;
+}
+.block-testimonials .testimonial-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(30, 42, 56, 0.11);
+}
+
+/* ═══════════════════════════════════════════
+   V2 · NAVEGACIÓN ÁGIL + DIVULGACIÓN PROGRESIVA
+   ═══════════════════════════════════════════ */
+
+/* Offset de anclas bajo el header sticky */
+section[id], [id="inicio"] { scroll-margin-top: 88px; }
+
+/* ── Scroll-spy rail (desktop) ── */
+.spy-rail {
+  position: fixed;
+  top: 50%;
+  right: 22px;
+  transform: translateY(-50%);
+  z-index: 250;
+  display: none;
+  flex-direction: column;
+  gap: 16px;
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+.spy-rail.active { opacity: 1; }
+@media (min-width: 1180px) {
+  .spy-rail { display: flex; }
+}
+.spy-dot {
+  position: relative;
+  width: 22px;
+  height: 22px;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.spy-dot::after {
+  content: '';
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--dca-platinum);
+  border: 1px solid rgba(30, 42, 56, 0.14);
+  transition: background 250ms ease, transform 250ms ease, border-color 250ms ease;
+}
+.spy-dot:hover::after { transform: scale(1.3); background: rgba(46, 139, 118, 0.5); }
+.spy-dot.current::after {
+  background: var(--dca-teal);
+  border-color: var(--dca-teal);
+  transform: scale(1.35);
+}
+.spy-label {
+  position: absolute;
+  right: 28px;
+  top: 50%;
+  transform: translateY(-50%) translateX(6px);
+  white-space: nowrap;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 10px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--dca-carbon);
+  background: rgba(255, 255, 255, 0.96);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 16px rgba(30, 42, 56, 0.10);
+  border: 1px solid var(--dca-platinum);
+  border-radius: 6px;
+  padding: 5px 11px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+.spy-dot:hover .spy-label,
+.spy-dot:focus-visible .spy-label {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+/* ── Obstáculos · switcher por categoría ── */
+.obstacle-tabs {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 40px 0 28px;
+}
+.obstacle-tab {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.01em;
+  color: rgba(30, 42, 56, 0.62);
+  background: var(--dca-white);
+  border: 1px solid var(--dca-platinum);
+  border-radius: 999px;
+  padding: 10px 20px;
+  min-height: 44px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  transition: background 220ms ease, color 220ms ease, border-color 220ms ease;
+}
+.obstacle-tab .tab-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.obstacle-tab[data-cat="critical"] .tab-dot { background: var(--dca-terracotta); }
+.obstacle-tab[data-cat="emerging"]  .tab-dot { background: var(--dca-gold); }
+.obstacle-tab[data-cat="capacity"]  .tab-dot { background: var(--dca-teal); }
+.obstacle-tab .tab-count { font-size: 11px; font-weight: 700; color: rgba(30, 42, 56, 0.32); }
+.obstacle-tab:hover { border-color: rgba(46, 139, 118, 0.45); color: var(--dca-carbon); }
+.obstacle-tab.active { background: var(--dca-carbon); border-color: var(--dca-carbon); color: var(--dca-white); }
+.obstacle-tab.active .tab-count { color: rgba(255, 255, 255, 0.55); }
+
+.obstacle-panels { position: relative; }
+.obstacle-panel { display: none; }
+.obstacle-panel.active {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  animation: panel-fade 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (min-width: 600px) {
+  .obstacle-panel.active { grid-template-columns: 1fr 1fr; }
+}
+@keyframes panel-fade {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.obstacle-panel-head {
+  grid-column: 1 / -1;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  margin-bottom: 4px;
+  padding-left: 4px;
+}
+.obstacle-panel-head--critical { color: var(--dca-terracotta); }
+.obstacle-panel-head--emerging  { color: var(--dca-gold); }
+.obstacle-panel-head--capacity  { color: var(--dca-teal); }
+
+/* ── Divulgación progresiva (Ver detalle) ── */
+.disclose-body {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 450ms cubic-bezier(0.22, 1, 0.36, 1), opacity 350ms ease;
+}
+.disclose-body.open { opacity: 1; }
+.disclose-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  background: none;
+  border: none;
+  padding: 6px 0;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--dca-teal);
+  transition: color 200ms ease;
+}
+.disclose-toggle .chev {
+  width: 13px; height: 13px;
+  transition: transform 300ms ease;
+  flex-shrink: 0;
+}
+.disclose-toggle[aria-expanded="true"] .chev { transform: rotate(180deg); }
+.disclose-toggle:hover { color: var(--dca-carbon); }
+.disclose-toggle .label-more { display: inline; }
+.disclose-toggle .label-less { display: none; }
+.disclose-toggle[aria-expanded="true"] .label-more { display: none; }
+.disclose-toggle[aria-expanded="true"] .label-less { display: inline; }
+
+/* J · prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .reveal { opacity: 1 !important; transform: none !important; }
+  .reveal-headline { clip-path: none !important; }
+  .section-accent { width: 40px !important; }
+  .hero-eyebrow-bar { width: 80px !important; }
+  .btn-gold-pulse { animation: none !important; }
+}
+
 </style>
 </head>
 
 <body>
+
+<!-- Barra de progreso de lectura -->
+<div id="reading-progress" aria-hidden="true"></div>
+
+<!-- Riel de navegación scroll-spy (ayuda de lectura, no menú de sitio) -->
+<nav class="spy-rail" aria-label="Navegación de secciones">
+  <button class="spy-dot" type="button" data-target="inicio"><span class="spy-label">Inicio</span></button>
+  <button class="spy-dot" type="button" data-target="obstaculos"><span class="spy-label">10 Obstáculos</span></button>
+  <button class="spy-dot" type="button" data-target="entregable"><span class="spy-label">Lo que recibes</span></button>
+  <button class="spy-dot" type="button" data-target="mecanica"><span class="spy-label">El instrumento</span></button>
+  <button class="spy-dot" type="button" data-target="aria"><span class="spy-label">Modelo ARIA</span></button>
+  <button class="spy-dot" type="button" data-target="testimonios"><span class="spy-label">Testimonios</span></button>
+  <button class="spy-dot" type="button" data-target="iniciar"><span class="spy-label">Empezar</span></button>
+</nav>
 
 <!-- ═══════════════════════════════════════════
      HEADER
@@ -1417,38 +1857,42 @@ section {
      BLOQUE 1 · APERTURA / RUPTURA DE PATRÓN
      ═══════════════════════════════════════════ -->
 <section class="block-hero" id="inicio">
+  <div class="hero-dots" aria-hidden="true"></div>
   <div class="hero-inner">
 
     <!-- Contenido -->
     <div class="hero-content">
-      <p class="hero-eyebrow">AI Return Test</p>
+      <div class="hero-eyebrow-row reveal">
+        <span class="hero-eyebrow-bar" aria-hidden="true"></span>
+        <p class="hero-eyebrow">AI Return Test</p>
+      </div>
 
-      <h1 class="hero-h1">
+      <h1 class="hero-h1 reveal-headline">
         10 obstáculos humanos y organizacionales deciden si tu inversión en IA produce retorno. El <strong>AI Return Test</strong> mide cuáles están operando en tu organización en 30 minutos.
       </h1>
 
-      <p class="hero-subtitle">
+      <p class="hero-subtitle reveal">
         Tu Índice de Urgencia Global, tu mapa de obstáculos y tu arquetipo de adopción — en 30 minutos.
       </p>
 
-      <div class="hero-body">
+      <div class="hero-body reveal">
         <p>Lo que el AI Return Test entrega no es retroalimentación: es un instrumento de diagnóstico con la profundidad que tu próximo comité ejecutivo necesita ver.</p>
         <p>El diagnóstico también identifica las capacidades que tu organización ya tiene instaladas — el punto de apoyo desde el cual ejecutar cualquier intervención.</p>
       </div>
 
-      <div class="hero-cta-group">
+      <div class="hero-cta-group reveal">
         <a href="#iniciar" class="btn-primary">Iniciar mi diagnóstico</a>
         <span class="cta-support">Sin costo · 30 minutos · Resultado inmediato</span>
       </div>
     </div>
 
     <!-- Visual editorial -->
-    <div class="hero-visual">
-      <div class="hero-visual-card">
+    <div class="hero-visual reveal">
+      <div class="hero-visual-card lift-plain">
         <p class="hero-visual-label">Vista previa · Tu reporte ejecutivo</p>
 
         <div class="iug-gauge">
-          <span class="iug-number">48.4</span>
+          <span class="iug-number" data-counter="48.4">48.4</span>
           <span class="iug-label">Índice de Urgencia Global</span>
         </div>
 
@@ -1482,80 +1926,104 @@ section {
 <!-- ═══════════════════════════════════════════
      BLOQUE 2 · MARCO DE LOS 10 OBSTÁCULOS
      ═══════════════════════════════════════════ -->
-<section class="block-obstacles">
+<section class="block-obstacles" id="obstaculos">
   <div class="container">
 
-    <div class="section-intro">
+    <div class="section-intro reveal">
       <p class="section-label">El sistema de diagnóstico</p>
       <h2>10 obstáculos en 3 categorías. Los que destruyen tu ROI hoy, los que están emergiendo y los que ya son capacidades operacionales en tu organización.</h2>
       <div class="section-accent"></div>
-      <div style="margin-top:24px;">
-        <p>De los 10 obstáculos identificados en la investigación aplicada con más de 70 organizaciones, el diagnóstico revela cuáles están activos en tu empresa, con qué intensidad y en qué orden conviene intervenirlos.</p>
-        <p style="margin-top:12px;">El mapa también identifica las capacidades que ya tienes — porque no toda la conversación con tu equipo de IA es de obstáculos.</p>
+      <button class="disclose-toggle" type="button" aria-expanded="false" aria-controls="disc-obstacles">
+        <span class="label-more">Ver detalle</span><span class="label-less">Ver menos</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="disclose-body" id="disc-obstacles">
+        <div style="padding-top:16px;">
+          <p>De los 10 obstáculos identificados en la investigación aplicada con más de 70 organizaciones, el diagnóstico revela cuáles están activos en tu empresa, con qué intensidad y en qué orden conviene intervenirlos.</p>
+          <p style="margin-top:12px;">El mapa también identifica las capacidades que ya tienes — porque no toda la conversación con tu equipo de IA es de obstáculos.</p>
+        </div>
       </div>
     </div>
 
-    <!-- Grid de los 10 obstáculos -->
-    <div class="obstacles-grid">
+    <!-- Switcher de los 10 obstáculos por categoría -->
+    <div class="reveal">
 
-      <!-- Críticos -->
-      <div class="obstacle-group-label obstacle-group-label--critical" style="grid-column: 1 / -1;">
-        Obstáculos Críticos — afectan el retorno hoy
-      </div>
-
-      <div class="obstacle-item obstacle-item--critical">
-        <span class="obstacle-num">01</span>
-        <span class="obstacle-name">Claridad en la Contribución de Valor</span>
-      </div>
-      <div class="obstacle-item obstacle-item--critical">
-        <span class="obstacle-num">02</span>
-        <span class="obstacle-name">Silos Culturales</span>
-      </div>
-      <div class="obstacle-item obstacle-item--critical">
-        <span class="obstacle-num">03</span>
-        <span class="obstacle-name">Desalineación de Talento</span>
+      <div class="obstacle-tabs" role="tablist" aria-label="Categorías de obstáculos">
+        <button class="obstacle-tab active" type="button" role="tab" data-cat="critical" aria-selected="true">
+          <span class="tab-dot" aria-hidden="true"></span>Críticos<span class="tab-count">3</span>
+        </button>
+        <button class="obstacle-tab" type="button" role="tab" data-cat="emerging" aria-selected="false">
+          <span class="tab-dot" aria-hidden="true"></span>Emergentes<span class="tab-count">4</span>
+        </button>
+        <button class="obstacle-tab" type="button" role="tab" data-cat="capacity" aria-selected="false">
+          <span class="tab-dot" aria-hidden="true"></span>Capacidades<span class="tab-count">3</span>
+        </button>
       </div>
 
-      <!-- Presencia Incipiente -->
-      <div class="obstacle-group-label obstacle-group-label--emerging" style="grid-column: 1 / -1;">
-        Presencia Incipiente — emergentes sin intervención
-      </div>
+      <div class="obstacle-panels">
 
-      <div class="obstacle-item obstacle-item--emerging">
-        <span class="obstacle-num">04</span>
-        <span class="obstacle-name">Liderazgo Desconectado</span>
-      </div>
-      <div class="obstacle-item obstacle-item--emerging">
-        <span class="obstacle-num">05</span>
-        <span class="obstacle-name">Creencias Limitantes</span>
-      </div>
-      <div class="obstacle-item obstacle-item--emerging">
-        <span class="obstacle-num">06</span>
-        <span class="obstacle-name">Brecha Generacional</span>
-      </div>
-      <div class="obstacle-item obstacle-item--emerging">
-        <span class="obstacle-num">07</span>
-        <span class="obstacle-name">Síndrome del Impostor Digital</span>
-      </div>
+        <!-- Críticos -->
+        <div class="obstacle-panel active" data-cat="critical" role="tabpanel">
+          <div class="obstacle-panel-head obstacle-panel-head--critical">
+            Obstáculos Críticos — afectan el retorno hoy
+          </div>
+          <div class="obstacle-item obstacle-item--critical">
+            <span class="obstacle-num">01</span>
+            <span class="obstacle-name">Claridad en la Contribución de Valor</span>
+          </div>
+          <div class="obstacle-item obstacle-item--critical">
+            <span class="obstacle-num">02</span>
+            <span class="obstacle-name">Silos Culturales</span>
+          </div>
+          <div class="obstacle-item obstacle-item--critical">
+            <span class="obstacle-num">03</span>
+            <span class="obstacle-name">Desalineación de Talento</span>
+          </div>
+        </div>
 
-      <!-- Capacidades Instaladas -->
-      <div class="obstacle-group-label obstacle-group-label--capacity" style="grid-column: 1 / -1;">
-        Capacidades Instaladas — puntos de apoyo para la intervención
-      </div>
+        <!-- Presencia Incipiente -->
+        <div class="obstacle-panel" data-cat="emerging" role="tabpanel">
+          <div class="obstacle-panel-head obstacle-panel-head--emerging">
+            Presencia Incipiente — emergentes sin intervención
+          </div>
+          <div class="obstacle-item obstacle-item--emerging">
+            <span class="obstacle-num">04</span>
+            <span class="obstacle-name">Liderazgo Desconectado</span>
+          </div>
+          <div class="obstacle-item obstacle-item--emerging">
+            <span class="obstacle-num">05</span>
+            <span class="obstacle-name">Creencias Limitantes</span>
+          </div>
+          <div class="obstacle-item obstacle-item--emerging">
+            <span class="obstacle-num">06</span>
+            <span class="obstacle-name">Brecha Generacional</span>
+          </div>
+          <div class="obstacle-item obstacle-item--emerging">
+            <span class="obstacle-num">07</span>
+            <span class="obstacle-name">Síndrome del Impostor Digital</span>
+          </div>
+        </div>
 
-      <div class="obstacle-item obstacle-item--capacity">
-        <span class="obstacle-num">08</span>
-        <span class="obstacle-name">Capacitación sin Impacto</span>
-      </div>
-      <div class="obstacle-item obstacle-item--capacity">
-        <span class="obstacle-num">09</span>
-        <span class="obstacle-name">Fricción de Governance</span>
-      </div>
-      <div class="obstacle-item obstacle-item--capacity">
-        <span class="obstacle-num">10</span>
-        <span class="obstacle-name">Miedo al Desplazamiento</span>
-      </div>
+        <!-- Capacidades Instaladas -->
+        <div class="obstacle-panel" data-cat="capacity" role="tabpanel">
+          <div class="obstacle-panel-head obstacle-panel-head--capacity">
+            Capacidades Instaladas — puntos de apoyo para la intervención
+          </div>
+          <div class="obstacle-item obstacle-item--capacity">
+            <span class="obstacle-num">08</span>
+            <span class="obstacle-name">Capacitación sin Impacto</span>
+          </div>
+          <div class="obstacle-item obstacle-item--capacity">
+            <span class="obstacle-num">09</span>
+            <span class="obstacle-name">Fricción de Governance</span>
+          </div>
+          <div class="obstacle-item obstacle-item--capacity">
+            <span class="obstacle-num">10</span>
+            <span class="obstacle-name">Miedo al Desplazamiento</span>
+          </div>
+        </div>
 
+      </div>
     </div>
 
     <p class="obstacles-note">Los análisis, puntajes y diagnóstico de cada obstáculo se revelan en tu reporte personalizado — no antes.</p>
@@ -1567,10 +2035,10 @@ section {
 <!-- ═══════════════════════════════════════════
      BLOQUE 3 · EL ENTREGABLE
      ═══════════════════════════════════════════ -->
-<section class="block-deliverable">
+<section class="block-deliverable" id="entregable">
   <div class="deliverable-inner">
 
-    <div class="deliverable-intro">
+    <div class="deliverable-intro reveal">
       <p class="section-label">Lo que recibes</p>
       <h2>Tu Índice de Urgencia Global, tu mapa de calor de 10 obstáculos, tu arquetipo entre 7 posibles y tu reporte de 10 páginas personalizado por industria — en tu correo en 5 minutos.</h2>
       <div class="section-accent"></div>
@@ -1585,14 +2053,12 @@ section {
     </div>
 
     <!-- Timeline -->
-    <div class="timeline">
+    <div class="timeline reveal">
       <p class="timeline-title">Lo que pasa después de enviar tus respuestas</p>
       <div class="timeline-steps">
 
         <div class="timeline-step">
-          <div class="timeline-dot">
-            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
-          </div>
+          <div class="timeline-num" aria-hidden="true">1</div>
           <div class="timeline-content">
             <p class="timeline-time">Segundo 10</p>
             <p class="timeline-desc">Tu reporte ejecutivo en pantalla: Índice de Urgencia Global, mapa de calor y arquetipo de adopción.</p>
@@ -1600,9 +2066,7 @@ section {
         </div>
 
         <div class="timeline-step">
-          <div class="timeline-dot">
-            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-          </div>
+          <div class="timeline-num" aria-hidden="true">2</div>
           <div class="timeline-content">
             <p class="timeline-time">Minuto 5</p>
             <p class="timeline-desc">Tu reporte personalizado de 10 páginas en tu correo, con análisis sectorial y el video de tu arquetipo.</p>
@@ -1610,9 +2074,7 @@ section {
         </div>
 
         <div class="timeline-step">
-          <div class="timeline-dot" style="background: var(--dca-gold);">
-            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-          </div>
+          <div class="timeline-num timeline-num--gold" aria-hidden="true">3</div>
           <div class="timeline-content">
             <p class="timeline-time" style="color:var(--dca-teal);">Acceso adicional</p>
             <p class="timeline-desc">El video del arquetipo de adopción identificado en tu organización y acceso personalizado al siguiente nivel del diagnóstico.</p>
@@ -1623,9 +2085,9 @@ section {
     </div>
 
     <!-- Mockup gallery -->
-    <div class="mockup-gallery">
+    <div class="mockup-gallery stagger">
 
-      <div class="mockup-card">
+      <div class="mockup-card reveal lift-plain">
         <div class="mockup-visual mockup-visual--gauge">
           <div class="gauge-visual">
             <div class="gauge-arc"></div>
@@ -1636,7 +2098,7 @@ section {
         <p class="mockup-caption">Tu Índice de Urgencia Global</p>
       </div>
 
-      <div class="mockup-card">
+      <div class="mockup-card reveal lift-plain">
         <div class="mockup-visual">
           <div class="heatmap-visual">
             <div class="heatmap-row">
@@ -1664,7 +2126,7 @@ section {
         <p class="mockup-caption">Tu mapa de calor — críticos, emergentes y capacidades</p>
       </div>
 
-      <div class="mockup-card">
+      <div class="mockup-card reveal lift-plain">
         <div class="mockup-visual">
           <div class="pdf-visual">
             <div class="pdf-header-bar"></div>
@@ -1683,11 +2145,11 @@ section {
     </div>
 
     <!-- Nota ARA — CORRECCIÓN 3 exacta -->
-    <div class="deliverable-ara-note">
+    <div class="deliverable-ara-note reveal">
       La última página de tu reporte incluye el acceso personalizado al AI Return Assessment — la página del diagnóstico corporativo calibrada para tu arquetipo de adopción, con el video de explicación del arquetipo y el CTA para agendar tu sesión de análisis de resultados con un especialista en rentabilización de la IA.
     </div>
 
-    <div class="deliverable-cta">
+    <div class="deliverable-cta reveal">
       <a href="#iniciar" class="btn-primary">Iniciar mi diagnóstico</a>
       <span class="cta-support">Sin costo · 30 minutos · Resultado inmediato</span>
     </div>
@@ -1699,16 +2161,22 @@ section {
 <!-- ═══════════════════════════════════════════
      BLOQUE 4 · MECÁNICA DEL TEST
      ═══════════════════════════════════════════ -->
-<section class="block-mechanics">
+<section class="block-mechanics" id="mecanica">
   <div class="mechanics-inner">
 
-    <div class="mechanics-content">
+    <div class="mechanics-content reveal">
       <p class="section-label">El instrumento</p>
       <h2>El AI Return Test toma 30 minutos porque mide 9 dimensiones de tu organización — no es un quiz, es un diagnóstico ejecutivo.</h2>
 
-      <div class="mechanics-body mt-24">
-        <p>Este diagnóstico no está diseñado para curiosidad. Está diseñado para ejecutivos que necesitan cuantificar el retorno de su inversión en IA antes de su próximo comité.</p>
-        <p>Las respuestas reflejan tu lectura del estado real de la organización — no hay datos delegables a tu equipo.</p>
+      <button class="disclose-toggle" type="button" aria-expanded="false" aria-controls="disc-mech" style="margin-top:20px;">
+        <span class="label-more">Ver detalle</span><span class="label-less">Ver menos</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="disclose-body" id="disc-mech">
+        <div class="mechanics-body" style="padding-top:16px;">
+          <p>Este diagnóstico no está diseñado para curiosidad. Está diseñado para ejecutivos que necesitan cuantificar el retorno de su inversión en IA antes de su próximo comité.</p>
+          <p>Las respuestas reflejan tu lectura del estado real de la organización — no hay datos delegables a tu equipo.</p>
+        </div>
       </div>
 
       <div class="pull-quote">
@@ -1716,34 +2184,34 @@ section {
       </div>
     </div>
 
-    <div class="mechanics-visual">
+    <div class="mechanics-visual stagger">
 
-      <div class="mechanic-stat">
-        <div class="mechanic-number">30</div>
+      <div class="mechanic-stat reveal lift">
+        <div class="mechanic-number" data-counter="30">30</div>
         <div class="mechanic-desc">
           <strong>Minutos de aplicación</strong>
           Tiempo exacto de un ejecutivo para completar el diagnóstico completo
         </div>
       </div>
 
-      <div class="mechanic-stat">
-        <div class="mechanic-number">9</div>
+      <div class="mechanic-stat reveal lift">
+        <div class="mechanic-number" data-counter="9">9</div>
         <div class="mechanic-desc">
           <strong>Dimensiones de análisis</strong>
           Cada dimensión mide un eje distinto del retorno potencial en tu organización
         </div>
       </div>
 
-      <div class="mechanic-stat">
-        <div class="mechanic-number">7</div>
+      <div class="mechanic-stat reveal lift">
+        <div class="mechanic-number" data-counter="7">7</div>
         <div class="mechanic-desc">
           <strong>Arquetipos de adopción</strong>
           Tu resultado te clasifica en uno de 7 perfiles con plan de intervención específico
         </div>
       </div>
 
-      <div class="mechanic-stat">
-        <div class="mechanic-number">5′</div>
+      <div class="mechanic-stat reveal lift">
+        <div class="mechanic-number" data-counter="5" data-suffix="′">5′</div>
         <div class="mechanic-desc">
           <strong>Tiempo al reporte</strong>
           Tu diagnóstico personalizado de 10 páginas llega a tu correo en 5 minutos
@@ -1760,46 +2228,52 @@ section {
      BLOQUE 5 · CREDIBILIDAD DEL MARCO
      Fondo: rgba(46,139,118,0.05) — NUNCA teal sólido
      ═══════════════════════════════════════════ -->
-<section class="block-credibility">
+<section class="block-credibility" id="aria">
   <div class="container">
 
-    <div class="credibility-intro">
+    <div class="credibility-intro reveal">
       <p class="section-label">El Modelo ARIA</p>
       <h2>El Modelo ARIA es propiedad intelectual de Digital Change Advisors. 14 herramientas propietarias, 6 sprints, adopción superior al 70% y ROI documentado en 120 días.</h2>
       <div class="section-accent"></div>
 
-      <div style="margin-top:28px;">
-        <p>Aceleración del Retorno de la Inteligencia Artificial. 6 sprints, 14 herramientas propietarias, adopción superior al 70% y ROI documentado en 120 días en las organizaciones que aplican la secuencia completa.</p>
-        <p style="margin-top:14px;">El marco también incluye el concepto propietario de Vector de Fricción Estratégica, que identifica cómo los obstáculos se amplifican entre sí cuando operan sin intervención.</p>
+      <button class="disclose-toggle" type="button" aria-expanded="false" aria-controls="disc-aria">
+        <span class="label-more">Ver detalle</span><span class="label-less">Ver menos</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="disclose-body" id="disc-aria">
+        <div style="padding-top:16px;">
+          <p>Aceleración del Retorno de la Inteligencia Artificial. 6 sprints, 14 herramientas propietarias, adopción superior al 70% y ROI documentado en 120 días en las organizaciones que aplican la secuencia completa.</p>
+          <p style="margin-top:14px;">El marco también incluye el concepto propietario de Vector de Fricción Estratégica, que identifica cómo los obstáculos se amplifican entre sí cuando operan sin intervención.</p>
+        </div>
       </div>
     </div>
 
     <!-- Grid de métricas -->
-    <div class="metrics-grid">
+    <div class="metrics-grid stagger">
 
-      <div class="metric-item">
-        <span class="metric-number">14</span>
+      <div class="metric-item reveal lift">
+        <span class="metric-number" data-counter="14">14</span>
         <span class="metric-label">Herramientas propietarias del Modelo ARIA</span>
       </div>
 
-      <div class="metric-item">
-        <span class="metric-number">70+</span>
+      <div class="metric-item reveal lift">
+        <span class="metric-number" data-counter="70" data-suffix="+">70+</span>
         <span class="metric-label">Organizaciones acompañadas en Hispanoamérica</span>
       </div>
 
-      <div class="metric-item">
-        <span class="metric-number">247+</span>
+      <div class="metric-item reveal lift">
+        <span class="metric-number" data-counter="247" data-suffix="+">247+</span>
         <span class="metric-label">Profesionales Comunidad LADA en 17 países</span>
       </div>
 
-      <div class="metric-item">
-        <span class="metric-number">120</span>
+      <div class="metric-item reveal lift">
+        <span class="metric-number" data-counter="120">120</span>
         <span class="metric-label">Días para ROI documentado con adopción superior al 70%</span>
       </div>
 
     </div>
 
-    <div class="credibility-footer">
+    <div class="credibility-footer reveal">
       <p class="credibility-authorship">Desarrollado y de propiedad intelectual de Digital Change Advisors, LLC.</p>
       <p class="credibility-connector">El AI Return Test es la línea base del Modelo ARIA — el instrumento de medición con el que comienza toda intervención.</p>
     </div>
@@ -1812,10 +2286,10 @@ section {
      BLOQUE 6 · TESTIMONIALES
      Rectangular + border-radius 8px · Stack vertical móvil
      ═══════════════════════════════════════════ -->
-<section class="block-testimonials">
+<section class="block-testimonials" id="testimonios">
   <div class="container">
 
-    <div class="testimonials-intro">
+    <div class="testimonials-intro reveal">
       <p class="section-label">Validación de campo</p>
       <h2>3 ejecutivos validaron la precisión del diagnóstico antes del lanzamiento. Esto es lo que el AI Return Test les permitió ver en su organización.</h2>
       <div class="section-accent"></div>
@@ -1823,10 +2297,10 @@ section {
 
     <p class="testimonials-subtext">Los testimoniales corresponden a líderes que aplicaron el diagnóstico en sus organizaciones durante la fase de validación del instrumento. Sus nombres, cargos y empresas son verificables públicamente.</p>
 
-    <div class="testimonials-grid">
+    <div class="testimonials-grid stagger">
 
       <!-- Tarjeta 1 — Rubén Darío Cañas / Subocol (datos duros) -->
-      <div class="testimonial-card">
+      <div class="testimonial-card reveal">
         <span class="testimonial-quote-mark">"</span>
         <p class="testimonial-text">
           Cuando Digital Change Advisors ejecutó con nosotros el diagnóstico, descubrimos una paradoja incómoda: vendíamos certeza con la IA hacia afuera, mientras vivíamos incertidumbre con la IA hacia adentro. Nuestro Índice de Urgencia Global resultó ser <span class="highlight">48.4 — zona amarilla</span> — en nuestras inversiones significativas en IA. Lo que más valoré fue la objetividad. No fue una opinión consultiva, fue data: obstáculos sistémicos cuantificados y un diagnóstico honesto basado en evidencia.
@@ -1842,7 +2316,7 @@ section {
       </div>
 
       <!-- Tarjeta 2 — Diego Parra / SUMMA — Grupo Argos (técnico) -->
-      <div class="testimonial-card">
+      <div class="testimonial-card reveal">
         <span class="testimonial-quote-mark">"</span>
         <p class="testimonial-text">
           El diagnóstico de Digital Change Advisors capturó la realidad de nuestra empresa con precisión. Identificó obstáculos específicos que veníamos observando pero no habíamos logrado articular con claridad. La metodología es rigurosa y los hallazgos fueron <span class="highlight">inmediatamente accionables</span>.
@@ -1858,7 +2332,7 @@ section {
       </div>
 
       <!-- Tarjeta 3 — Julián Hurtado / Susuerte (humano, featured) -->
-      <div class="testimonial-card testimonial-card--featured">
+      <div class="testimonial-card testimonial-card--featured reveal">
         <span class="testimonial-quote-mark">"</span>
         <p class="testimonial-text">
           Cuando hicimos el diagnóstico con César Lozano, lo primero que me sorprendió fue que el reporte reflejaba con <span class="highlight">precisión quirúrgica</span> lo que estábamos viviendo en Susuerte. No era un reporte genérico: era un espejo de nuestra realidad. En un momento en que mi empresa enfrentaba un año complejo, el consejo fue honesto, desinteresado y orientado a lo que realmente necesitábamos. Eso, en el mundo de la consultoría, no es común.
@@ -1887,15 +2361,15 @@ section {
   <div class="cta-main-inner">
 
     <p class="section-label" style="color: rgba(255,255,255,0.45);">Tu próximo paso</p>
-    <h2>30 minutos. 9 dimensiones. Tu diagnóstico ejecutivo del retorno de tu inversión en IA, en tu correo en 5 minutos.</h2>
+    <h2 class="reveal-headline">30 minutos. 9 dimensiones. Tu diagnóstico ejecutivo del retorno de tu inversión en IA, en tu correo en 5 minutos.</h2>
 
-    <div class="cta-main-body">
+    <div class="cta-main-body reveal">
       <p>30 minutos hoy para tener el diagnóstico que tu próximo comité ejecutivo necesita ver.</p>
       <p>Sin honorarios. Sin agenda comercial.</p>
     </div>
 
-    <div class="cta-main-cta-group">
-      <a href="#" class="btn-primary btn-primary--gold">Iniciar mi diagnóstico</a>
+    <div class="cta-main-cta-group reveal">
+      <a href="https://returnai.com/test/" class="btn-primary btn-primary--gold btn-gold-pulse">Iniciar mi diagnóstico</a>
       <span class="cta-support cta-support--dark">Sin costo · 30 minutos · Resultado inmediato</span>
     </div>
 
@@ -1907,7 +2381,7 @@ section {
      BLOQUE 8 · REACTIVACIÓN / LOSS AVERSION SOBRIA
      ═══════════════════════════════════════════ -->
 <section class="block-reactivation">
-  <div class="reactivation-inner">
+  <div class="reactivation-inner reveal">
 
     <p class="section-label text-center">El costo de no medir</p>
     <h2>Cada trimestre que esperas para medirla, tu inversión en IA se deprecia sin producir el retorno esperado.</h2>
@@ -1939,14 +2413,14 @@ section {
       <div class="footer-connector footer-connector--primary">
         <p class="footer-connector-sublabel">Novela ReturnAI · $19.97 ebook · $29.97 impreso</p>
         <h3>¿Prefieres comprender el marco primero?</h3>
-        <a href="#" class="btn-outline btn-outline--white">Conocer la Novela ReturnAI</a>
+        <a href="https://returnai.com/novela/" class="btn-outline btn-outline--white">Conocer la Novela ReturnAI</a>
       </div>
 
       <!-- Conector secundario — AI Return Assessment (jerarquía inferior) -->
       <div class="footer-connector">
         <p class="footer-connector-sublabel">AI Return Assessment · $5,000 · Diagnóstico presencial</p>
         <h3>¿Necesitas un diagnóstico presencial para tu equipo directivo?</h3>
-        <a href="#" class="btn-outline btn-outline--white">Conocer el AI Return Assessment</a>
+        <a href="https://returnai.com/assessment/" class="btn-outline btn-outline--white">Conocer el AI Return Assessment</a>
       </div>
 
     </div>
@@ -1979,6 +2453,210 @@ section {
   </div>
 
 </footer>
+
+<!-- ═══════════════════════════════════════════
+     SISTEMA DE ANIMACIONES · JS vanilla
+     ═══════════════════════════════════════════ -->
+<script>
+(function () {
+  'use strict';
+
+  var reduceMotion = window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ── B · Stagger: delay incremental de 90ms a los hijos .reveal ── */
+  document.querySelectorAll('.stagger').forEach(function (group) {
+    var kids = Array.prototype.filter.call(group.children, function (c) {
+      return c.classList.contains('reveal');
+    });
+    kids.forEach(function (kid, i) {
+      kid.style.transitionDelay = (i * 90) + 'ms';
+    });
+  });
+
+  /* ── A · D · E · Reveal de secciones, headlines, líneas y barra del hero ── */
+  var revealSelector = '.reveal, .reveal-headline, .section-accent, .hero-eyebrow-bar';
+
+  if (reduceMotion) {
+    document.querySelectorAll(revealSelector).forEach(function (el) {
+      el.classList.add('visible');
+    });
+  } else if ('IntersectionObserver' in window) {
+    var revealObserver = new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll(revealSelector).forEach(function (el) {
+      revealObserver.observe(el);
+    });
+  } else {
+    document.querySelectorAll(revealSelector).forEach(function (el) {
+      el.classList.add('visible');
+    });
+  }
+
+  /* ── C · Contadores numéricos animados ── */
+  function animateCounter(el) {
+    var raw = el.getAttribute('data-counter');
+    var target = parseFloat(raw);
+    var suffix = el.getAttribute('data-suffix') || '';
+    var dotPart = raw.split('.')[1];
+    var decimals = dotPart ? dotPart.length : 0;
+    var duration = 1200;
+    var startTime = null;
+
+    function frame(now) {
+      if (startTime === null) startTime = now;
+      var t = Math.min((now - startTime) / duration, 1);
+      var eased = 1 - Math.pow(1 - t, 3); /* ease-out cúbico */
+      el.textContent = (target * eased).toFixed(decimals) + suffix;
+      if (t < 1) {
+        requestAnimationFrame(frame);
+      } else {
+        el.textContent = target.toFixed(decimals) + suffix;
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+
+  var counters = document.querySelectorAll('[data-counter]');
+  if (reduceMotion || !('IntersectionObserver' in window)) {
+    /* Los valores finales ya están en el HTML; no se anima. */
+  } else {
+    var counterObserver = new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          animateCounter(entry.target);
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    counters.forEach(function (el) { counterObserver.observe(el); });
+  }
+
+  /* ── G · Barra de progreso de lectura · H · Header scroll ── */
+  var progress = document.getElementById('reading-progress');
+  var header = document.querySelector('.site-header');
+  var ticking = false;
+
+  function onScroll() {
+    var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    var pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+
+    if (progress) {
+      progress.style.width = pct + '%';
+      if (scrollTop > 30) progress.classList.add('active');
+      else progress.classList.remove('active');
+    }
+    if (header) {
+      if (scrollTop > 48) header.classList.add('scrolled');
+      else header.classList.remove('scrolled');
+    }
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', function () {
+    if (!ticking) {
+      window.requestAnimationFrame(onScroll);
+      ticking = true;
+    }
+  }, { passive: true });
+
+  /* ── Obstáculos · switcher por categoría ── */
+  var obsTabs = Array.prototype.slice.call(document.querySelectorAll('.obstacle-tab'));
+  var obsPanels = Array.prototype.slice.call(document.querySelectorAll('.obstacle-panel'));
+  obsTabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      var cat = tab.getAttribute('data-cat');
+      obsTabs.forEach(function (t) {
+        var on = t === tab;
+        t.classList.toggle('active', on);
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+      obsPanels.forEach(function (p) {
+        p.classList.toggle('active', p.getAttribute('data-cat') === cat);
+      });
+    });
+  });
+
+  /* ── Divulgación progresiva ── */
+  document.querySelectorAll('.disclose-toggle').forEach(function (btn) {
+    var body = document.getElementById(btn.getAttribute('aria-controls'));
+    if (!body) return;
+    btn.addEventListener('click', function () {
+      var isOpen = btn.getAttribute('aria-expanded') === 'true';
+      if (isOpen) {
+        body.style.maxHeight = body.scrollHeight + 'px';
+        requestAnimationFrame(function () { body.style.maxHeight = '0px'; });
+        body.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      } else {
+        body.classList.add('open');
+        body.style.maxHeight = body.scrollHeight + 'px';
+        btn.setAttribute('aria-expanded', 'true');
+        body.addEventListener('transitionend', function te(e) {
+          if (e.propertyName === 'max-height' && btn.getAttribute('aria-expanded') === 'true') {
+            body.style.maxHeight = 'none';
+          }
+          body.removeEventListener('transitionend', te);
+        });
+      }
+    });
+  });
+
+  /* ── Riel de navegación scroll-spy ── */
+  var rail = document.querySelector('.spy-rail');
+  var spyDots = Array.prototype.slice.call(document.querySelectorAll('.spy-dot'));
+  var spySections = spyDots.map(function (d) {
+    return document.getElementById(d.getAttribute('data-target'));
+  });
+
+  spyDots.forEach(function (dot) {
+    dot.addEventListener('click', function () {
+      var el = document.getElementById(dot.getAttribute('data-target'));
+      if (!el) return;
+      var y = el.getBoundingClientRect().top + window.pageYOffset - 76;
+      window.scrollTo({ top: y, behavior: reduceMotion ? 'auto' : 'smooth' });
+    });
+  });
+
+  function updateSpy(scrollTop) {
+    if (rail) {
+      if (scrollTop > 30) rail.classList.add('active');
+      else rail.classList.remove('active');
+    }
+    var idx = 0;
+    for (var i = 0; i < spySections.length; i++) {
+      var s = spySections[i];
+      if (s && (s.getBoundingClientRect().top + window.pageYOffset) - 130 <= scrollTop) idx = i;
+    }
+    spyDots.forEach(function (d, i) {
+      d.classList.toggle('current', i === idx);
+      d.setAttribute('aria-current', i === idx ? 'true' : 'false');
+    });
+  }
+
+  var spyTicking = false;
+  window.addEventListener('scroll', function () {
+    if (!spyTicking) {
+      window.requestAnimationFrame(function () {
+        updateSpy(window.pageYOffset || document.documentElement.scrollTop);
+        spyTicking = false;
+      });
+      spyTicking = true;
+    }
+  }, { passive: true });
+
+  onScroll();
+  updateSpy(window.pageYOffset || document.documentElement.scrollTop);
+})();
+</script>
 
 </body>
 </html>
