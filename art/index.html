@@ -1528,6 +1528,159 @@ section {
   border-top: 3px solid var(--dca-teal);
 }
 
+/* ── Hero · Banner titular full-width (R1 · Ajuste 1) ── */
+.hero-banner {
+  position: relative;
+  z-index: 1;
+  max-width: var(--layout-max-width);
+  margin: 0 auto;
+  padding: 0 24px 52px;
+  text-align: center;
+}
+.hero-banner-h1 {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 4.2vw, 54px);
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  color: var(--dca-carbon);
+}
+.hero-banner-h1 em {
+  font-style: normal;
+  color: var(--dca-teal);
+  display: block;
+}
+
+/* ── Hero · Copy resolución (R1 col) ── */
+.hero-resolution {
+  font-size: 17px;
+  color: rgba(30,42,56,0.80);
+  line-height: 1.65;
+  margin-bottom: 24px;
+}
+.hero-resolution strong {
+  color: var(--dca-carbon);
+  font-weight: 600;
+}
+
+/* ── Hero · Anclaje de valor (R6 · Ajuste 3) ── */
+.hero-value-anchor {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 16px;
+  color: var(--dca-carbon);
+  line-height: 1.55;
+  margin-bottom: 32px;
+  padding: 16px 20px;
+  background: var(--dca-teal-subtle);
+  border-left: 3px solid var(--dca-teal);
+  border-radius: 0 8px 8px 0;
+}
+.hero-value-anchor strong {
+  color: var(--dca-teal);
+  font-weight: 600;
+  display: block;
+  margin-bottom: 4px;
+}
+
+/* ── Hero · Social proof (R4) ── */
+.hero-social-proof {
+  display: block;
+  font-size: 12px;
+  color: rgba(30,42,56,0.48);
+  text-align: center;
+  margin-top: 10px;
+  letter-spacing: 0.03em;
+}
+
+/* ── Hero · Composición PDF placeholder (R5 · Ajuste 2) ── */
+.hero-pdf-composition {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 360px;
+  padding-bottom: 36px;
+}
+.pdf-stack {
+  position: relative;
+  width: 230px;
+  height: 290px;
+}
+.pdf-stack-page {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200px;
+  height: 265px;
+  background: var(--dca-white);
+  border: 1px solid var(--dca-platinum);
+  border-top: 3px solid var(--dca-teal);
+  border-radius: 4px;
+  box-shadow: 0 4px 16px rgba(30,42,56,0.08);
+  overflow: hidden;
+}
+.pdf-stack-page--left {
+  transform: rotate(-7deg) translate(-24px, 16px);
+  z-index: 1;
+  opacity: 0.60;
+  border-top-color: rgba(46,139,118,0.35);
+}
+.pdf-stack-page--center {
+  transform: translate(8px, -8px);
+  z-index: 3;
+  box-shadow: 0 8px 28px rgba(30,42,56,0.14);
+}
+.pdf-stack-page--right {
+  transform: rotate(7deg) translate(40px, 16px);
+  z-index: 1;
+  opacity: 0.60;
+  border-top-color: rgba(46,139,118,0.35);
+}
+.pdf-stack-page-inner {
+  padding: 12px 14px 8px;
+}
+.pdf-sim-line {
+  height: 5px;
+  background: rgba(30,42,56,0.08);
+  border-radius: 2px;
+  margin-bottom: 6px;
+}
+.pdf-sim-line--s  { width: 50%; }
+.pdf-sim-line--m  { width: 72%; }
+.pdf-sim-line--l  { width: 88%; }
+.pdf-sim-gauge {
+  margin: 14px auto 4px;
+  width: 60px;
+  height: 32px;
+  border: 4px solid rgba(164,129,17,0.20);
+  border-bottom: none;
+  border-radius: 60px 60px 0 0;
+}
+.pdf-sim-gauge-val {
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 14px;
+  color: rgba(164,129,17,0.28);
+  filter: blur(2px);
+}
+.pdf-composition-label {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--dca-teal);
+  color: var(--dca-white);
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  padding: 7px 18px;
+  border-radius: 20px;
+  white-space: nowrap;
+  z-index: 5;
+}
+
 /* ═══════════════════════════════════════════
    TIMELINE · horizontal desktop / vertical móvil
    ═══════════════════════════════════════════ */
@@ -1850,64 +2003,92 @@ section[id], [id="inicio"] { scroll-margin-top: 88px; }
      ═══════════════════════════════════════════ -->
 <section class="block-hero" id="inicio">
   <div class="hero-dots" aria-hidden="true"></div>
+
+  <!-- Banner titular full-width (R1 · Ajuste 1 · Opción B) -->
+  <div class="hero-banner">
+    <h1 class="hero-banner-h1 reveal-headline">
+      Tu empresa ya invirtió en IA.
+      <em>¿Por qué el retorno no llega?</em>
+    </h1>
+  </div>
+
   <div class="hero-inner">
 
-    <!-- Contenido -->
+    <!-- Columna izquierda -->
     <div class="hero-content">
+
+      <!-- Eyebrow de continuidad (R2) -->
       <div class="hero-eyebrow-row reveal">
         <span class="hero-eyebrow-bar" aria-hidden="true"></span>
-        <p class="hero-eyebrow">AI Return Test</p>
+        <p class="hero-eyebrow">Diagnóstico ejecutivo · El siguiente paso después de la Novela</p>
       </div>
 
-      <h1 class="hero-h1 reveal-headline">
-        10 obstáculos humanos y organizacionales deciden si tu inversión en IA produce retorno. El <strong>AI Return Test</strong> mide cuáles están operando en tu organización en 30 minutos.
-      </h1>
-
-      <p class="hero-subtitle reveal">
-        Tu Índice de Urgencia Global, tu mapa de obstáculos y tu arquetipo de adopción — en 30 minutos.
+      <!-- Copy de resolución (R1) -->
+      <p class="hero-resolution reveal">
+        Uno de 10 obstáculos documentados lo está bloqueando. El <strong>AI Return Test</strong> identifica cuál — y con qué intensidad opera en tu organización.
       </p>
 
-      <div class="hero-body reveal">
-        <p>Lo que el AI Return Test entrega no es retroalimentación: es un instrumento de diagnóstico con la profundidad que tu próximo comité ejecutivo necesita ver.</p>
-        <p>El diagnóstico también identifica las capacidades que tu organización ya tiene instaladas — el punto de apoyo desde el cual ejecutar cualquier intervención.</p>
+      <!-- Anclaje de valor (R6 · Ajuste 3 · Variante B) -->
+      <div class="hero-value-anchor reveal">
+        <strong>La claridad que su equipo interno tardará 3 meses en construir.</strong>
+        En 30 minutos. Sin costo.
       </div>
 
+      <!-- CTA principal (R3) -->
       <div class="hero-cta-group reveal">
-        <a href="#iniciar" class="btn-primary">Iniciar mi diagnóstico</a>
-        <span class="cta-support">Sin costo · 30 minutos · Resultado inmediato</span>
+        <a href="#iniciar" class="btn-primary">Ver mi Índice de Urgencia Global</a>
+        <span class="cta-support">Sin costo · 30 minutos · Resultado ejecutivo inmediato</span>
+        <!-- Social proof (R4) -->
+        <span class="hero-social-proof">Completado por directivos de 70+ organizaciones · 17 países</span>
       </div>
+
     </div>
 
-    <!-- Visual editorial -->
+    <!-- Columna derecha · Composición PDF (R5 · Ajuste 2) -->
     <div class="hero-visual reveal">
-      <div class="hero-visual-card lift-plain">
-        <p class="hero-visual-label">Vista previa · Tu reporte ejecutivo</p>
-
-        <div class="iug-gauge">
-          <span class="iug-number" data-counter="48.4">48.4</span>
-          <span class="iug-label">Índice de Urgencia Global</span>
-        </div>
-
-        <div class="obstacles-mini">
-          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.10em;color:var(--dca-terracotta);margin-bottom:4px;">Obstáculos críticos</div>
-          <div class="obstacle-bar">
-            <span class="obstacle-bar-label">Silos Culturales</span>
-            <div class="obstacle-bar-fill obstacle-bar-fill--critical"></div>
+      <!-- TODO: Reemplazar este bloque completo por:
+           <img src="/images/reporte-pdf-composicion.png"
+                alt="Reporte Ejecutivo AI Return Test — composición de páginas"
+                style="width:100%;height:auto;border-radius:8px;">
+           cuando la imagen esté lista. -->
+      <div class="hero-pdf-composition">
+        <div class="pdf-stack">
+          <!-- Página izquierda -->
+          <div class="pdf-stack-page pdf-stack-page--left">
+            <div class="pdf-stack-page-inner">
+              <div class="pdf-sim-line pdf-sim-line--m"></div>
+              <div class="pdf-sim-line pdf-sim-line--s"></div>
+              <div class="pdf-sim-line pdf-sim-line--l"></div>
+              <div class="pdf-sim-line pdf-sim-line--m"></div>
+              <div class="pdf-sim-line pdf-sim-line--s"></div>
+              <div class="pdf-sim-line pdf-sim-line--l"></div>
+            </div>
           </div>
-          <div class="obstacle-bar">
-            <span class="obstacle-bar-label">Liderazgo</span>
-            <div class="obstacle-bar-fill obstacle-bar-fill--emerging"></div>
+          <!-- Página central · contiene gauge IUG -->
+          <div class="pdf-stack-page pdf-stack-page--center">
+            <div class="pdf-stack-page-inner">
+              <div class="pdf-sim-line pdf-sim-line--m"></div>
+              <div class="pdf-sim-line pdf-sim-line--s"></div>
+              <div class="pdf-sim-gauge"></div>
+              <div class="pdf-sim-gauge-val">48.4</div>
+              <div class="pdf-sim-line pdf-sim-line--l" style="margin-top:10px;"></div>
+              <div class="pdf-sim-line pdf-sim-line--m"></div>
+              <div class="pdf-sim-line pdf-sim-line--s"></div>
+            </div>
           </div>
-          <div class="obstacle-bar">
-            <span class="obstacle-bar-label">Capacitación</span>
-            <div class="obstacle-bar-fill obstacle-bar-fill--capacity"></div>
+          <!-- Página derecha -->
+          <div class="pdf-stack-page pdf-stack-page--right">
+            <div class="pdf-stack-page-inner">
+              <div class="pdf-sim-line pdf-sim-line--l"></div>
+              <div class="pdf-sim-line pdf-sim-line--m"></div>
+              <div class="pdf-sim-line pdf-sim-line--s"></div>
+              <div class="pdf-sim-line pdf-sim-line--l"></div>
+              <div class="pdf-sim-line pdf-sim-line--m"></div>
+              <div class="pdf-sim-line pdf-sim-line--s"></div>
+            </div>
           </div>
         </div>
-
-        <div class="hero-visual-footer">
-          <span class="hero-tag">Reporte Ejecutivo · Versión previa enmascarada</span>
-          <span class="hero-blur-badge">Personalizado</span>
-        </div>
+        <div class="pdf-composition-label">Reporte Ejecutivo · Personalizado · Confidencial</div>
       </div>
     </div>
 
